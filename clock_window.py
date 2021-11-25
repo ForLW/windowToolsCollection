@@ -3,7 +3,11 @@ import time
 from tkinter import messagebox
 
 
-class Appliaction(tkinter.Frame):
+def click_thing():
+    messagebox.showinfo("信息", "点击事件")
+
+
+class Application(tkinter.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
@@ -25,7 +29,7 @@ class Appliaction(tkinter.Frame):
 
         self.button1["text"] = "计时"
         self.button1["font"] = ("楷体", 20)
-        self.button1["command"] = self.click_thing
+        self.button1["command"] = click_thing
         self.button1.pack(pady=50)
 
         while True:
@@ -33,12 +37,10 @@ class Appliaction(tkinter.Frame):
             self.label_time.update()
             time.sleep(0.1)
 
-    def click_thing(self):
-        messagebox.showinfo("信息", "点击事件")
 
-
-root = tkinter.Tk()
-root.title("计时器")
-root.geometry("400x600")
-app = Appliaction(root)
-app.mainloop()
+if __name__ == '__main__':
+    root = tkinter.Tk()
+    root.title("计时器")
+    root.geometry("400x600")
+    app = Application(root)
+    app.mainloop()
