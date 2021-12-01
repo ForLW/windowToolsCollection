@@ -67,6 +67,7 @@ class Application(Frame):
         self.button1.pack(pady=50)
 
         self.create()
+        self.label1.bind("<Key>", self.test_to)
 
     def create(self):
         self.label1["text"] = "万能进制转换器"
@@ -76,6 +77,7 @@ class Application(Frame):
         )
         self.entryEnd.config(
             bd=5, width=20, font=("楷体", 20), fg="red"
+            # , state='readonly'
         )
         values = [str(i) + "进制" for i in range(2, 17)]
         self.com1.config(
@@ -101,9 +103,10 @@ class Application(Frame):
         self.button1.config(
             text="转换", font=("楷体", 20), command=self.test_to
         )
+        self.entryStart.focus_set()
 
     # 按钮点击事件
-    def test_to(self):
+    def test_to(self, event=None):
         num_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15,
                     "a": 10, "b": 11, "c": 12, "d": 13, "e": 14, "f": 15}
         entryStartText = self.entryStart.get()
@@ -135,9 +138,14 @@ class Application(Frame):
                 self.entryEnd.insert("end", entryEndText)
 
 
+def test(event):
+    app.test_to()
+
+
 if __name__ == '__main__':
     root = Tk()
     root.title("进制转换器")
     root.geometry("400x600")
     app = Application(root)
+    root.bind("<Key>", test)
     app.mainloop()
