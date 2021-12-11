@@ -3,10 +3,12 @@ from tkinter import messagebox
 from tkinter import *
 
 
-# 将任意2~16进制字符串转换成10进制
+# 将任意2~36进制字符串转换成10进制
 def x_to_num(num, x):
-    num_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15,
-                "a": 10, "b": 11, "c": 12, "d": 13, "e": 14, "f": 15}
+    num_dict = {}
+    for i in range(26):
+        num_dict[chr(ord("A")+i)] = 10+i
+        num_dict[chr(ord("a")+i)] = 10+i
     i = 0
     res = 0
     while len(num) > 0:
@@ -21,12 +23,14 @@ def x_to_num(num, x):
     return res
 
 
-# 把10进制数转换成任意2~16进制字符串
+# 把10进制数转换成任意2~36进制字符串
 def num_to_x_str(num, x):
     res = []
     res_str = ""
-    num_dict = {10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"}
-    if 2 <= x <= 16:
+    num_dict = {}
+    for i in range(26):
+        num_dict[10 + i] = chr(ord("A") + i)
+    if 2 <= x <= 36:
         while num > 0:
             if num % x < 10:
                 res.append(num % x)
@@ -73,13 +77,13 @@ class Application(Frame):
         self.label1["text"] = "万能进制转换器"
         self.label1["font"] = ("楷体", 30)
         self.entryStart.config(
-            bd=5, width=20, font=("楷体", 20), fg="red"
+            bd=5, width=60, font=("楷体", 20), fg="red"
         )
         self.entryEnd.config(
-            bd=5, width=20, font=("楷体", 20), fg="red"
+            bd=5, width=60, font=("楷体", 20), fg="red"
             # , state='readonly'
         )
-        values = [str(i) + "进制" for i in range(2, 17)]
+        values = [str(i) + "进制" for i in range(2, 37)]
         self.com1.config(
             height=10,  # 高度,下拉显示的条目数量
             width=6,  # 宽度
@@ -107,8 +111,10 @@ class Application(Frame):
 
     # 按钮点击事件
     def test_to(self, event=None):
-        num_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15,
-                    "a": 10, "b": 11, "c": 12, "d": 13, "e": 14, "f": 15}
+        num_dict = {}
+        for i in range(26):
+            num_dict[chr(ord("A")+i)] = 10+i
+            num_dict[chr(ord("a")+i)] = 10+i
         entryStartText = self.entryStart.get()
         if entryStartText == "":
             messagebox.showwarning("警告", "请输入要转换的数字")
@@ -139,13 +145,16 @@ class Application(Frame):
 
 
 def test(event):
-    app.test_to()
+    if ord('0') <= event.keycode <= ord('9') or\
+       ord('a') <= event.keycode <= ord('z') or\
+       ord('A') <= event.keycode <= ord('Z'):
+        app.test_to()
 
 
 if __name__ == '__main__':
     root = Tk()
     root.title("进制转换器")
-    root.geometry("400x600")
+    root.geometry("1000x600")
     app = Application(root)
     root.bind("<Key>", test)
     app.mainloop()
